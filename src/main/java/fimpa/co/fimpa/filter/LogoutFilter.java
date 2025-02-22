@@ -24,12 +24,12 @@ public class LogoutFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        // Tambahkan log untuk memeriksa metode permintaan
+        // Log untuk memeriksa metode permintaan dan URI
         System.out.println("Metode permintaan di filter: " + httpRequest.getMethod());
         System.out.println("URI permintaan di filter: " + httpRequest.getRequestURI());
 
         if ("POST".equalsIgnoreCase(httpRequest.getMethod()) && "/logout".equals(httpRequest.getRequestURI())) {
-            // Tambahkan log untuk memverifikasi apakah token ada di header
+            // Log untuk memverifikasi apakah token ada di header
             String token = httpRequest.getHeader("Authorization");
             if (token != null && !token.isEmpty()) {
                 System.out.println("Token diterima di header: " + token);
@@ -53,8 +53,10 @@ public class LogoutFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }

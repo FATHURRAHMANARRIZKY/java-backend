@@ -5,6 +5,7 @@ import fimpa.co.fimpa.filter.LogoutFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,14 +42,17 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/register-user", "/register", "/login", "/logout", "/contact", "/products",
-                                "/products/**",
-                                "/ratings", "/ratings/**")
+                                "/products/**", "/ratings", "/ratings/**", "/verify-token")
                         .permitAll()
-                        .requestMatchers("/product/add").authenticated() // Lindungi /product/add
+                        .requestMatchers("/product/add").authenticated()
                         .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class) // Tambahkan filter
-                                                                                           // autentikasi JWT
-                .addFilterBefore(logoutFilter, BasicAuthenticationFilter.class); // Tambahkan filter logout
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpStatus.OK.value()); // Set status ke OK tanpa redirect
+                        }))
+                .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(logoutFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
 
@@ -63,10 +67,10 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000") // Ubah sesuai dengan asal front-end Anda
+                        .allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("Authorization", "Content-Type")
-                        .allowCredentials(true); // Izinkan kredensial
+                        .allowCredentials(true);
             }
         };
     }
