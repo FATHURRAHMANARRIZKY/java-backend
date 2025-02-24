@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@Order(1)
+@Order(2)
 public class LogoutFilter implements Filter {
 
     @Override
@@ -24,19 +24,7 @@ public class LogoutFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        // Log untuk memeriksa metode permintaan dan URI
-        System.out.println("Metode permintaan di filter: " + httpRequest.getMethod());
-        System.out.println("URI permintaan di filter: " + httpRequest.getRequestURI());
-
         if ("POST".equalsIgnoreCase(httpRequest.getMethod()) && "/logout".equals(httpRequest.getRequestURI())) {
-            // Log untuk memverifikasi apakah token ada di header
-            String token = httpRequest.getHeader("Authorization");
-            if (token != null && !token.isEmpty()) {
-                System.out.println("Token diterima di header: " + token);
-            } else {
-                System.out.println("Token tidak ada di header.");
-            }
-
             // Hapus cookie token
             Cookie cookie = new Cookie("token", null);
             cookie.setHttpOnly(true);

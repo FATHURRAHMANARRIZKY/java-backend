@@ -31,14 +31,62 @@ public class Users {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    private String profilePicture;
+    private String fullName;
+    private String phoneNumber;
+    private String address;
+
     public Users(String id, @NotBlank @Size(min = 4, max = 20) String username, @NotBlank @Size(max = 50) String email,
-            @NotBlank @Size(min = 8, max = 32) String password, Role role) {
+            @NotBlank @Size(min = 8, max = 32) String password, Role role, String profilePicture,
+            String fullName, String phoneNumber, String address) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.profilePicture = profilePicture;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
     }
+
+    
+
+    public String getFullName() {
+        return fullName;
+    }
+
+
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+
+
+    public String getAddress() {
+        return address;
+    }
+
+
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
 
     public String getId() {
         return id;
@@ -78,6 +126,14 @@ public class Users {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
 }

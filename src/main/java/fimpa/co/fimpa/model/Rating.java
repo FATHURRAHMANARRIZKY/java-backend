@@ -11,10 +11,10 @@ public class Rating {
     private String name;
     private int rating;
     private String comment;
-    private LocalDate createAt;
+    private LocalDate createdAt;
 
-    public Rating(){
-        this.createAt = LocalDate.now();
+    public Rating() {
+        this.createdAt = LocalDate.now();
     }
 
     public String getId() {
@@ -49,11 +49,11 @@ public class Rating {
         this.comment = comment;
     }
 
-    public LocalDate getCreateAt() {
-        return createAt;
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(LocalDate createAt) {
-        this.createAt = createAt;
-    }  
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
 }

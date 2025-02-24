@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,7 +19,7 @@ public class UsersService {
     private UsersRepository usersRepository;
 
     @Autowired
-    private AdminRepository adminRepository; // Tambahkan repository admin
+    private AdminRepository adminRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -27,8 +28,8 @@ public class UsersService {
     private PasswordEncoder passwordEncoder;
 
     public void register(Users user) {
-        // Periksa apakah email sudah terdaftar sebagai user atau admin
-        if (usersRepository.findByEmail(user.getEmail()).isPresent() || adminRepository.findByEmail(user.getEmail()).isPresent()) {
+        if (usersRepository.findByEmail(user.getEmail()).isPresent()
+                || adminRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Email already registered");
         }
 
@@ -41,5 +42,13 @@ public class UsersService {
     public Users loginByEmail(String email, String password) {
         Optional<Users> user = usersRepository.findByEmail(email);
         return user.filter(u -> passwordEncoder.matches(password, u.getPassword())).orElse(null);
+    }
+
+    public Users findByEmail(String email) {
+        return usersRepository.findByEmail(email).orElse(null);
+    }
+
+    public List<Users> findAll() {
+        return usersRepository.findAll();
     }
 }
