@@ -62,7 +62,9 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setStatus(HttpStatus.OK.value()); // Set status ke OK tanpa redirect
+                            response.setStatus(HttpStatus.OK.value());
+                            response.setHeader("Set-Cookie",
+                                    "token=; HttpOnly; Path=/; Max-Age=0; SameSite=None; Secure=false");
                         }))
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
                 .addFilterBefore(logoutFilter, BasicAuthenticationFilter.class);
