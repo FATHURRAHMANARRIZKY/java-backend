@@ -54,14 +54,15 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/register-user", "/register", "/login", "/logout", "/contact", "/products",
-                                "/products/**", "/ratings", "/ratings/**", "/verify-token", "/me", "/uploads/**",
+                                "/products/**", "/ratings", "/ratings/**", "/verify-token", "/me", "/uploads",
+                                "/uploads/**", "/uploads/profile/user/**", "/uploads/profile/admin/**",
                                 "/admins", "/users")
                         .permitAll()
                         .requestMatchers("/product/add").authenticated()
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> {
+                        .logoutSuccessHandler((_, response, _) -> {
                             response.setStatus(HttpStatus.OK.value());
                             response.setHeader("Set-Cookie",
                                     "token=; HttpOnly; Path=/; Max-Age=0; SameSite=None; Secure=false");

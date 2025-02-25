@@ -8,16 +8,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @SuppressWarnings("null")
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:/D:/uploads/");
     }
 
+    @SuppressWarnings("null")
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://www.f21.my.id", "http://167.172.73.161:3000" , "http://localhost:3000", "http://10.20.20.24:3000")
+                .allowedOrigins( "http://localhost:3000")
                 .allowCredentials(true)
                 .allowedMethods("*");
     }

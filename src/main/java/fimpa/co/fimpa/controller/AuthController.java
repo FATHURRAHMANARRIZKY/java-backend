@@ -92,6 +92,29 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body("Logout successful");
     }
 
+    // @GetMapping("/verify-token")
+    // public ResponseEntity<?> verifyToken(HttpServletRequest request) {
+    // String token = null;
+    // Cookie[] cookies = request.getCookies();
+    // if (cookies != null) {
+    // for (Cookie cookie : cookies) {
+    // if ("token".equals(cookie.getName())) {
+    // token = cookie.getValue();
+    // break;
+    // }
+    // }
+    // }
+
+    // if (token != null && jwtUtil.validateToken(token)) {
+    // String role = jwtUtil.extractRole(token);
+    // Map<String, String> responseBody = new HashMap<>();
+    // responseBody.put("role", role);
+    // return ResponseEntity.ok(responseBody);
+    // } else {
+    // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+    // }
+    // }
+
     @GetMapping("/verify-token")
     public ResponseEntity<?> verifyToken(HttpServletRequest request) {
         String token = null;
@@ -104,6 +127,9 @@ public class AuthController {
                 }
             }
         }
+
+        // Debugging token
+        System.out.println("Token from cookies: " + token);
 
         if (token != null && jwtUtil.validateToken(token)) {
             String role = jwtUtil.extractRole(token);
@@ -138,11 +164,15 @@ public class AuthController {
             if (user != null) {
                 responseBody.put("username", user.getUsername());
                 responseBody.put("email", user.getEmail());
-                responseBody.put("profilePicture", user.getProfilePicture());
+                // Serve the profile picture URL
+                responseBody.put("profilePicture",
+                        "http://localhost:8080" + user.getProfilePicture());
             } else if (admin != null) {
                 responseBody.put("username", admin.getUsername());
                 responseBody.put("email", admin.getEmail());
-                responseBody.put("profilePicture", admin.getProfilePicture());
+                // Serve the profile picture URL
+                responseBody.put("profilePicture",
+                        "http://localhost:8080" + admin.getProfilePicture());
             }
             return ResponseEntity.ok(responseBody);
         } else {

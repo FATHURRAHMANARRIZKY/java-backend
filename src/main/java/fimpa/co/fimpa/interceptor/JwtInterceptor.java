@@ -12,6 +12,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @SuppressWarnings("null")
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
@@ -32,11 +33,13 @@ public class JwtInterceptor implements HandlerInterceptor {
         return true;
     }
 
+    @SuppressWarnings("null")
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) {
     }
 
+    @SuppressWarnings("null")
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
             Exception ex) {

@@ -7,7 +7,6 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +25,7 @@ public class JwtAuthenticationFilter implements Filter {
     private static final List<String> PUBLIC_URLS = List.of(
             "/register-user", "/register", "/login", "/logout",
             "/contact", "/products", "/products/**", "/ratings",
-            "/ratings/**", "/verify-token", "/me", "/uploads/**", "/admins", "/users");
+            "/ratings/**", "/verify-token", "/me", "/uploads","/uploads/**", "/admins", "/users");
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -37,19 +36,18 @@ public class JwtAuthenticationFilter implements Filter {
         String requestURI = httpRequest.getRequestURI();
         String method = httpRequest.getMethod();
 
-        System.out.println("Metode permintaan di filter: " + method);
-        System.out.println("URI permintaan di filter: " + requestURI);
+        System.out.println("Request Method: " + method);
+        System.out.println("Request URI: " + requestURI);
 
+        // Skip the URL paths defined in PUBLIC_URLS
         for (String url : PUBLIC_URLS) {
             if (requestURI.startsWith(url)) {
-                // Jika ini adalah URL publik, lanjutkan filter chain tanpa memeriksa token
-                System.out.println("Mengizinkan akses ke URL publik: " + requestURI);
-                chain.doFilter(request, response);
+                chain.doFilter(request, response); // Skip filtering for public URLs
                 return;
             }
         }
 
-        // Di bawah ini adalah pemeriksaan token untuk URL selain yang ada dalam daftar publik
+        // Check for JWT token in cookie
         String token = null;
         Cookie[] cookies = httpRequest.getCookies();
         if (cookies != null) {
@@ -60,12 +58,14 @@ public class JwtAuthenticationFilter implements Filter {
             }
         }
 
+        // Validate token
         if (token != null && jwtUtil.validateToken(token)) {
-            System.out.println("Token valid di filter: " + token);
-            chain.doFilter(request, response); // Pastikan chain.doFilter dipanggil saat token valid
+            System.out.println("Token is valid: " + token);
+            chain.doFilter(request, response); // Proceed with request
         } else {
-            System.out.println("Token tidak valid atau tidak ada token di filter.");
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            System.out.println("Invalid token or no token found.");
+            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Send 401 Unauthorized
+            httpResponse.getWriter().write("Unauthorized access: Invalid token");
         }
     }
 

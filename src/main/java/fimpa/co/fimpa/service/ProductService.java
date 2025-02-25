@@ -81,8 +81,9 @@ public class ProductService {
     }
 
     public void deleteProduct(String id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
+        if (!productRepository.existsById(id)) {
+            throw new IllegalArgumentException("Product not found with ID: " + id);
+        }
         productRepository.deleteById(id);
-    }
+    }    
 }
