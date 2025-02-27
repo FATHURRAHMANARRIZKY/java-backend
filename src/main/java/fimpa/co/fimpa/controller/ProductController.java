@@ -29,27 +29,34 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/add")
-    public ResponseEntity<Object> addProduct(
-            @RequestParam("name") String name,
-            @RequestParam("description") String description,
-            @RequestParam("category") String category,
-            @RequestParam(value = "imageUrl", required = false) MultipartFile image,
-            @RequestParam("price") Double price)
-             {
+public ResponseEntity<Object> addProduct(
+        @RequestParam("name") String name,
+        @RequestParam("description") String description,
+        @RequestParam("category") String category,
+        @RequestParam(value = "imageUrl", required = false) MultipartFile image,
+        @RequestParam("minPrice") Double minPrice,
+        @RequestParam("maxPrice") Double maxPrice) {
 
-        try {
-            Product newProduct = productService.addProduct(name, description, category, image, price);
-            return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
-        } catch (IOException e) {
-            logger.error("Error while uploading image", e);
-            return buildErrorResponse("Error while uploading image");
-        } catch (IllegalArgumentException e) {
-            return buildErrorResponse(e.getMessage());
-        } catch (Exception e) {
-            logger.error("Error while adding product", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    try {
+        if (minPrice > maxPrice) {
+            return buildErrorResponse("Harga minimum tidak boleh lebih besar dari harga maksimum.");
         }
+
+        // Tambahkan log untuk debugging
+        System.out.println("Received request: " + name + ", " + minPrice + " - " + maxPrice);
+        if (image != null) {
+            System.out.println("Image received: " + image.getOriginalFilename());
+        }
+
+        Product newProduct = productService.addProduct(name, description, category, image, minPrice, maxPrice);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    } catch (IOException e) {
+        return buildErrorResponse("Error while uploading image");
+    } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
+
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllProducts(
@@ -88,18 +95,20 @@ public class ProductController {
             @RequestParam("description") String description,
             @RequestParam("category") String category,
             @RequestParam(value = "imageUrl", required = false) MultipartFile image,
-            @RequestParam("price") @NumberFormat(pattern = "#,###.##") Double price) {
+            @RequestParam("minPrice") @NumberFormat(pattern = "#,###.##") Double minPrice,
+            @RequestParam("maxPrice") @NumberFormat(pattern = "#,###.##") Double maxPrice) {
 
         try {
-            Product updatedProduct = productService.updateProduct(id, name, description, category, image, price);
+            if (minPrice > maxPrice) {
+                return buildErrorResponse("Harga minimum tidak boleh lebih besar dari harga maksimum.");
+            }
+
+            Product updatedProduct = productService.updateProduct(id, name, description, category, image, minPrice,
+                    maxPrice);
             return ResponseEntity.ok(updatedProduct);
         } catch (IOException e) {
-            logger.error("Error while updating image", e);
             return buildErrorResponse("Error while updating image");
-        } catch (IllegalArgumentException e) {
-            return buildErrorResponse(e.getMessage());
         } catch (Exception e) {
-            logger.error("Error while updating product", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

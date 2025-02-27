@@ -58,7 +58,6 @@ public class SecurityConfig {
                                 "/uploads/**", "/uploads/profile/user/**", "/uploads/profile/admin/**",
                                 "/admins", "/users")
                         .permitAll()
-                        .requestMatchers("/product/add").authenticated()
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutUrl("/logout")

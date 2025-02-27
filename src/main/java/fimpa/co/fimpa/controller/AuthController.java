@@ -92,29 +92,6 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body("Logout successful");
     }
 
-    // @GetMapping("/verify-token")
-    // public ResponseEntity<?> verifyToken(HttpServletRequest request) {
-    // String token = null;
-    // Cookie[] cookies = request.getCookies();
-    // if (cookies != null) {
-    // for (Cookie cookie : cookies) {
-    // if ("token".equals(cookie.getName())) {
-    // token = cookie.getValue();
-    // break;
-    // }
-    // }
-    // }
-
-    // if (token != null && jwtUtil.validateToken(token)) {
-    // String role = jwtUtil.extractRole(token);
-    // Map<String, String> responseBody = new HashMap<>();
-    // responseBody.put("role", role);
-    // return ResponseEntity.ok(responseBody);
-    // } else {
-    // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-    // }
-    // }
-
     @GetMapping("/verify-token")
     public ResponseEntity<?> verifyToken(HttpServletRequest request) {
         String token = null;

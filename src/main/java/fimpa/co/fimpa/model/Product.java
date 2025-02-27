@@ -12,15 +12,34 @@ public class Product {
     private String description;
     private String category;
     private String imageUrl;
-    private Double price;
+    private Double minPrice; // Harga minimum
+    private Double maxPrice;
 
     // Constructor, Getter, dan Setter
-    public Product(String name, String description, String category, String imageUrl, Double price) {
+    public Product(String name, String description, String category, String imageUrl, Double minPrice,
+            Double maxPrice) {
         this.name = name;
         this.description = description;
         this.category = category;
         this.imageUrl = imageUrl;
-        this.price = price;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
+    }
+
+    public Double getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(Double minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public Double getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice = maxPrice;
     }
 
     public String getId() {
@@ -63,13 +82,4 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    
 }

@@ -35,13 +35,13 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
     }
 
-    public Product addProduct(String name, String description, String category, MultipartFile image, Double price) throws IOException {
+    public Product addProduct(String name, String description, String category, MultipartFile image, Double minPrice, Double maxPrice) throws IOException {
         String imageUrl = saveImage(image);
-        Product product = new Product(name, description, category, imageUrl, price);
+        Product product = new Product(name, description, category, imageUrl, minPrice, maxPrice);
         return productRepository.save(product);
     }
 
-    public Product updateProduct(String id, String name, String description, String category, MultipartFile image, Double price)
+    public Product updateProduct(String id, String name, String description, String category, MultipartFile image, Double minPrice, Double maxPrice)
             throws IOException {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
@@ -49,6 +49,8 @@ public class ProductService {
         existingProduct.setName(name);
         existingProduct.setDescription(description);
         existingProduct.setCategory(category);
+        existingProduct.setMinPrice(minPrice);
+        existingProduct.setMaxPrice(maxPrice);
 
         if (image != null && !image.isEmpty()) {
             deleteOldImage(existingProduct.getImageUrl());
