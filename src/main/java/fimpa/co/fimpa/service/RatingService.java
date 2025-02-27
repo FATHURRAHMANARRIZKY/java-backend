@@ -28,6 +28,7 @@ public class RatingService {
     public Rating updateRating(String id, Rating updateRating){
         return ratingRepository.findById(id).map(existingRating -> {
             existingRating.setName(updateRating.getName());
+            existingRating.setEmail(updateRating.getEmail());
             existingRating.setRating(updateRating.getRating());
             existingRating.setComment(updateRating.getComment());
             return ratingRepository.save(existingRating);

@@ -9,6 +9,7 @@ public class Rating {
     @Id
     private String id;
     private String name;
+    private String email;
     private int rating;
     private String comment;
     private LocalDate createdAt;
@@ -55,5 +56,13 @@ public class Rating {
 
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
