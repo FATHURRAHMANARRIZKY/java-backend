@@ -42,7 +42,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(_ -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
@@ -52,6 +52,7 @@ public class SecurityConfig {
                     corsConfig.setAllowCredentials(true);
                     return corsConfig;
                 }))
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/register-user", "/register", "/login", "/logout", "/contact", "/products",
                                 "/products/**", "/ratings", "/ratings/**", "/verify-token", "/me", "/uploads",

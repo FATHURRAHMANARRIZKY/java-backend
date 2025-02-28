@@ -77,4 +77,8 @@ public class UsersService {
     public List<Users> findAll() {
         return usersRepository.findAll();
     }
+
+    public boolean emailExists(String email) {
+        return usersRepository.existsByEmail(email);
+    }
 }

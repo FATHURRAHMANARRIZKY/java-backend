@@ -3,6 +3,7 @@ package fimpa.co.fimpa.controller;
 import fimpa.co.fimpa.model.Users;
 import fimpa.co.fimpa.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +31,10 @@ public class UsersController {
             @RequestParam("phoneNumber") String phoneNumber,
             @RequestParam("address") String address,
             @RequestParam("file") MultipartFile file) throws IOException {
+
+        if (service.emailExists(email)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
+        }
 
         // Save the uploaded profile photo and get the image URL
         String profileImageUrl = service.saveImage(file, "profile/user/");
