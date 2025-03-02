@@ -16,7 +16,6 @@ public class ContactService {
     }
 
     public Contact getContact() {
-        // Assuming there is only one contact object in the database
         return contactRepository.findAll().stream().findFirst().orElse(null);
     }
 }

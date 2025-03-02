@@ -25,12 +25,11 @@ public class LogoutFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         if ("POST".equalsIgnoreCase(httpRequest.getMethod()) && "/logout".equals(httpRequest.getRequestURI())) {
-            // Hapus cookie token
             Cookie cookie = new Cookie("token", null);
             cookie.setHttpOnly(true);
-            cookie.setSecure(false); // Set to true if using HTTPS
+            cookie.setSecure(false);
             cookie.setPath("/");
-            cookie.setMaxAge(0); // Hapus cookie
+            cookie.setMaxAge(0);
             httpResponse.addCookie(cookie);
 
             httpResponse.setHeader("Set-Cookie",

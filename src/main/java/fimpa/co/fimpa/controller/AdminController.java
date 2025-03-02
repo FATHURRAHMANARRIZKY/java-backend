@@ -22,22 +22,18 @@ public class AdminController {
     }
 
     @PostMapping("/register")
-public ResponseEntity<String> registerAdmin(@RequestParam("username") String username,
-                                            @RequestParam("email") String email,
-                                            @RequestParam("password") String password,
-                                            @RequestParam("fullName") String fullName,
-                                            @RequestParam("phoneNumber") String phoneNumber,
-                                            @RequestParam("address") String address,
-                                            @RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<String> registerAdmin(@RequestParam("username") String username,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("fullName") String fullName,
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam("address") String address,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        String profileImageUrl = service.saveImage(file, "profile/admin/");
+        Admin admin = new Admin(null, username, email, password, null, profileImageUrl, fullName, phoneNumber, address);
+        service.register(admin);
 
-    // Save the uploaded profile photo and get the image URL
-    String profileImageUrl = service.saveImage(file, "profile/admin/");
-
-    // Create Admin object with the profile image URL
-    Admin admin = new Admin(null, username, email, password, null, profileImageUrl, fullName, phoneNumber, address);
-    service.register(admin);
-
-    return ResponseEntity.ok("Admin registered successfully");
-}
+        return ResponseEntity.ok("Admin registered successfully");
+    }
 
 }

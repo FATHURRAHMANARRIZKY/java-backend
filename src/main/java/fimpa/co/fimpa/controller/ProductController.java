@@ -42,12 +42,6 @@ public ResponseEntity<Object> addProduct(
             return buildErrorResponse("Harga minimum tidak boleh lebih besar dari harga maksimum.");
         }
 
-        // Tambahkan log untuk debugging
-        System.out.println("Received request: " + name + ", " + minPrice + " - " + maxPrice);
-        if (image != null) {
-            System.out.println("Image received: " + image.getOriginalFilename());
-        }
-
         Product newProduct = productService.addProduct(name, description, category, image, minPrice, maxPrice);
         return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
     } catch (IOException e) {

@@ -34,20 +34,14 @@ public class JwtAuthenticationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String requestURI = httpRequest.getRequestURI();
-        String method = httpRequest.getMethod();
 
-        System.out.println("Request Method: " + method);
-        System.out.println("Request URI: " + requestURI);
-
-        // Skip the URL paths defined in PUBLIC_URLS
         for (String url : PUBLIC_URLS) {
             if (requestURI.startsWith(url)) {
-                chain.doFilter(request, response); // Skip filtering for public URLs
+                chain.doFilter(request, response);
                 return;
             }
         }
 
-        // Check for JWT token in cookie
         String token = null;
         Cookie[] cookies = httpRequest.getCookies();
         if (cookies != null) {
@@ -58,13 +52,10 @@ public class JwtAuthenticationFilter implements Filter {
             }
         }
 
-        // Validate token
         if (token != null && jwtUtil.validateToken(token)) {
-            System.out.println("Token is valid: " + token);
-            chain.doFilter(request, response); // Proceed with request
+            chain.doFilter(request, response);
         } else {
-            System.out.println("Invalid token or no token found.");
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Send 401 Unauthorized
+            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpResponse.getWriter().write("Unauthorized access: Invalid token");
         }
     }

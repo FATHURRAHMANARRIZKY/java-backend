@@ -35,8 +35,6 @@ public class UsersController {
         if (service.emailExists(email)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
         }
-
-        // Save the uploaded profile photo and get the image URL
         String profileImageUrl = service.saveImage(file, "profile/user/");
 
         Users user = new Users(null, username, email, password, null, profileImageUrl, fullName, phoneNumber, address);

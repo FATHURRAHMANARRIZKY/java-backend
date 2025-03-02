@@ -47,22 +47,14 @@ public class AdminService {
     }
 
     public String saveImage(MultipartFile image, String folder) throws IOException {
-        // Define the upload directory for the profile images
         String uploadDir = uploadDirectory + folder;
         File dir = new File(uploadDir);
         if (!dir.exists()) {
-            dir.mkdirs(); // Create directories if they don't exist
+            dir.mkdirs();
         }
-
-        // Get the image filename
         String imageName = image.getOriginalFilename();
         File imageFile = new File(uploadDir + imageName);
-
-        // Save the image to the file system
         image.transferTo(imageFile);
-
-        // Return the image URL (this will depend on your server setup, for example
-        // localhost or public URL)
         return "/uploads/" + folder + imageName;
     }
 

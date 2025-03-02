@@ -32,7 +32,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        System.out.println("Login attempt with email: " + loginRequest.getEmail());
         Users user = usersService.loginByEmail(loginRequest.getEmail(), loginRequest.getPassword());
         Admin admin = adminService.loginByEmail(loginRequest.getEmail(), loginRequest.getPassword());
 
@@ -42,35 +41,26 @@ public class AuthController {
         if (user != null) {
             role = "USER";
             token = jwtUtil.generateToken(user.getEmail(), role, user.getUsername());
-            System.out.println("User found: " + user.getEmail());
         } else if (admin != null) {
             role = "ADMIN";
             token = jwtUtil.generateToken(admin.getEmail(), role, admin.getUsername());
-            System.out.println("Admin found: " + admin.getEmail());
         } else {
-            System.out.println("Invalid email or password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
 
         if (token != null) {
-            // Log token yang dihasilkan untuk memastikan konsistensi
-            System.out.println("Token dihasilkan: " + token);
             return createResponse(response, token);
         }
-
-        System.out.println("Token generation failed");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
     }
 
     private ResponseEntity<?> createResponse(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
-        cookie.setSecure(false); // Set to true if using HTTPS
+        cookie.setSecure(false);
         cookie.setPath("/");
-        cookie.setMaxAge(3600); // Set expiration time in seconds
+        cookie.setMaxAge(3600);
         response.addCookie(cookie);
-
-        System.out.println("Set cookie with token: " + token); // Tambahkan logging
 
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("token", token);
@@ -81,9 +71,9 @@ public class AuthController {
     public ResponseEntity<?> logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("token", null);
         cookie.setHttpOnly(true);
-        cookie.setSecure(false); // Set to true if using HTTPS
+        cookie.setSecure(false);
         cookie.setPath("/");
-        cookie.setMaxAge(0); // Hapus cookie
+        cookie.setMaxAge(0);
         response.addCookie(cookie);
 
         response.setHeader("Set-Cookie",
@@ -141,13 +131,11 @@ public class AuthController {
             if (user != null) {
                 responseBody.put("username", user.getUsername());
                 responseBody.put("email", user.getEmail());
-                // Serve the profile picture URL
                 responseBody.put("profilePicture",
                         "http://localhost:8080" + user.getProfilePicture());
             } else if (admin != null) {
                 responseBody.put("username", admin.getUsername());
                 responseBody.put("email", admin.getEmail());
-                // Serve the profile picture URL
                 responseBody.put("profilePicture",
                         "http://localhost:8080" + admin.getProfilePicture());
             }

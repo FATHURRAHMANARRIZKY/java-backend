@@ -24,19 +24,16 @@ public class RatingController {
         this.ratingService = ratingService;
     }
 
-    // Get all ratings
     @GetMapping
     public ResponseEntity<List<Rating>> getAllRatings() {
         try {
             List<Rating> ratings = ratingService.getAllRatings();
             return ResponseEntity.ok(ratings);
         } catch (Exception e) {
-            // Log the error and return a 500 status code
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-    // Get rating by ID
     @GetMapping("/{id}")
     public ResponseEntity<Rating> getRatingById(@PathVariable String id) {
         try {
@@ -47,7 +44,6 @@ public class RatingController {
         }
     }
 
-    // Add a new rating
     @PostMapping
     public ResponseEntity<Rating> addRating(@RequestBody Rating rating) {
         try {
@@ -58,7 +54,6 @@ public class RatingController {
         }
     }
 
-    // Update an existing rating
     @PutMapping("/{id}")
     public ResponseEntity<Rating> updateRating(@PathVariable String id, @RequestBody Rating updateRating) {
         try {
@@ -69,7 +64,6 @@ public class RatingController {
         }
     }
 
-    // Delete a rating by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRating(@PathVariable String id) {
         try {
