@@ -95,16 +95,13 @@ public class AuthController {
             }
         }
 
-        // Debugging token
-        System.out.println("Token from cookies: " + token);
-
         if (token != null && jwtUtil.validateToken(token)) {
             String role = jwtUtil.extractRole(token);
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("role", role);
             return ResponseEntity.ok(responseBody);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+            return null;
         }
     }
 

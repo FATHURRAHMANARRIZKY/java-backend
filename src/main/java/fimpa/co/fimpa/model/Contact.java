@@ -7,10 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Contact {
      @Id
     private String id;
-    private String instagramProfile;
-    private String facebookProfile;
-    private String twitterProfile;
-    private String tiktokProfile;
+    private String name;
+    private String mediasocial;
     
     public String getId() {
         return id;
@@ -18,30 +16,16 @@ public class Contact {
     public void setId(String id) {
         this.id = id;
     }
-    public String getInstagramProfile() {
-        return instagramProfile;
+    public String getName() {
+        return name;
     }
-    public void setInstagramProfile(String instagramProfile) {
-        this.instagramProfile = instagramProfile;
+    public void setName(String name) {
+        this.name = name;
     }
-    public String getFacebookProfile() {
-        return facebookProfile;
+    public String getMediasocial() {
+        return mediasocial;
     }
-    public void setFacebookProfile(String facebookProfile) {
-        this.facebookProfile = facebookProfile;
-    }
-    public String getTwitterProfile() {
-        return twitterProfile;
-    }
-    public void setTwitterProfile(String twitterProfile) {
-        this.twitterProfile = twitterProfile;
-    }
-    public String getTiktokProfile() {
-        return tiktokProfile;
-    }
-    public void setTiktokProfile(String tiktokProfile) {
-        this.tiktokProfile = tiktokProfile;
-    }
-
-    
+    public void setMediasocial(String mediasocial) {
+        this.mediasocial = mediasocial;
+    }    
 }

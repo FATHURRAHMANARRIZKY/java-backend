@@ -54,7 +54,7 @@ public class SecurityConfig {
                 }))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/register-user", "/register", "/login", "/logout", "/contact", "/products",
+                        .requestMatchers("/register-user", "/register", "/login", "/logout", "/contact/**", "/products",
                                 "/products/**", "/ratings", "/ratings/**", "/verify-token", "/me", "/uploads",
                                 "/uploads/**", "/uploads/profile/user/**", "/uploads/profile/admin/**",
                                 "/admins", "/users")
