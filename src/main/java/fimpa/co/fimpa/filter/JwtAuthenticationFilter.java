@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter implements Filter {
 
     private static final List<String> PUBLIC_URLS = List.of(
             "/register-user", "/register", "/login", "/logout",
-            "/contact", "/products", "/products/**", "/ratings",
+            "/contact", "/contact/**", "/products", "/products/**", "/ratings",
             "/ratings/**", "/verify-token", "/me", "/uploads","/uploads/**", "/admins", "/users");
 
     @Override

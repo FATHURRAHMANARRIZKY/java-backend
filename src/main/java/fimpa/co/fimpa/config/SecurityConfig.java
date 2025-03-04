@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(_ -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000", "http://10.20.20.22:3000"));
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000", "http://10.20.20.24:3000"));
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                     corsConfig.setAllowCredentials(true);
@@ -54,7 +54,7 @@ public class SecurityConfig {
                 }))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/register-user", "/register", "/login", "/logout", "/contact/**", "/products",
+                        .requestMatchers("/register-user", "/register", "/login", "/logout", "/contact", "/contact/**", "/products",
                                 "/products/**", "/ratings", "/ratings/**", "/verify-token", "/me", "/uploads",
                                 "/uploads/**", "/uploads/profile/user/**", "/uploads/profile/admin/**",
                                 "/admins", "/users")
@@ -83,7 +83,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000", "http://10.20.20.22:3000")
+                        .allowedOrigins("http://localhost:3000", "http://10.20.20.24:3000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("Authorization", "Content-Type")
                         .allowCredentials(true);
