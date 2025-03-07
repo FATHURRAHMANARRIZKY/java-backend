@@ -35,35 +35,46 @@ public class AuthController {
         Users user = usersService.loginByEmail(loginRequest.getEmail(), loginRequest.getPassword());
         Admin admin = adminService.loginByEmail(loginRequest.getEmail(), loginRequest.getPassword());
 
+        String token;
+        String username;
+        String email = loginRequest.getEmail();
         String role;
-        String token = null;
 
         if (user != null) {
             role = "USER";
-            token = jwtUtil.generateToken(user.getEmail(), role, user.getUsername());
+            username = user.getUsername();
+            token = jwtUtil.generateToken(email, role, username);
         } else if (admin != null) {
             role = "ADMIN";
-            token = jwtUtil.generateToken(admin.getEmail(), role, admin.getUsername());
+            username = admin.getUsername();
+            token = jwtUtil.generateToken(email, role, username);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
 
         if (token != null) {
-            return createResponse(response, token);
+            return createResponse(response, token, username, email, role);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
     }
 
-    private ResponseEntity<?> createResponse(HttpServletResponse response, String token) {
+    private ResponseEntity<?> createResponse(HttpServletResponse response, String token, String username, String email,
+            String role) {
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
         cookie.setPath("/");
         cookie.setMaxAge(3600);
         response.addCookie(cookie);
+        response.setHeader("Authorization", "Bearer " + token);
 
         Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("token", token);
+        // responseBody.put("Authorization: Bearer", token);
+        // responseBody.put("token", token);
+        // responseBody.put("username", username);
+        // responseBody.put("email", email);
+        // responseBody.put("role", role);
+
         return ResponseEntity.ok(responseBody);
     }
 

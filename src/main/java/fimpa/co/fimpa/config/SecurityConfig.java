@@ -57,7 +57,7 @@ public class SecurityConfig {
                         .requestMatchers("/register-user", "/register", "/login", "/logout", "/contact", "/contact/**", "/products",
                                 "/products/**", "/ratings", "/ratings/**", "/verify-token", "/me", "/uploads",
                                 "/uploads/**", "/uploads/profile/user/**", "/uploads/profile/admin/**",
-                                "/admins", "/users")
+                                "/admins", "/users", "/users/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .logout(logout -> logout

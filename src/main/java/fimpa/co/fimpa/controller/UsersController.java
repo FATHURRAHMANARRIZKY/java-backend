@@ -22,6 +22,16 @@ public class UsersController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/users/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
+        Users user = service.findByEmail(email);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
     @PostMapping("/register-user")
     public ResponseEntity<String> registerUser(
             @RequestParam("username") String username,

@@ -12,7 +12,7 @@ public class Product {
     private String description;
     private String category;
     private String imageUrl;
-    private Double minPrice; // Harga minimum
+    private Double minPrice;
     private Double maxPrice;
 
     // Constructor, Getter, dan Setter
